@@ -213,12 +213,14 @@ function tFuncs.new(tTerm)
   function tFrame.scroll(iNum)
     expect(1, iNum, "number")
 
-    for i = 1, iNum do
-      table.remove(tBuffer1[1]) -- table.remove should automatically shift
-      tBuffer1[iY] = initLine(iY, ' ', sTextColor, sBackgroundColor, false)
-    end
-    for i = 1, iY do
-      tBuffer1[i].dirty = true
+    if iNum > 0 then
+      for i = 1, iNum do
+        table.remove(tBuffer1[1]) -- table.remove should automatically shift
+        tBuffer1[iY] = initLine(iY, ' ', sTextColor, sBackgroundColor, false)
+      end
+      for i = 1, iY do
+        tBuffer1[i].dirty = true
+      end
     end
   end
 
