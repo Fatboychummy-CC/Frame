@@ -113,16 +113,17 @@ function tFuncs.new(tTerm)
                 table.concat(tBuffer1[y][2]),
                 table.concat(tBuffer1[y][3])
               )
+
+              -- then copy the data to buffer 2
+              tBuffer2[y][1] = table.pack(table.unpack(tBuffer1[y][1]))
+              tBuffer2[y][2] = table.pack(table.unpack(tBuffer1[y][2]))
+              tBuffer2[y][3] = table.pack(table.unpack(tBuffer1[y][3]))
+
+              -- then set this line's dirty value to false
+              tBuffer1[y].dirty = false
+              break -- then don't check the rest of the chars
             end
           end
-
-          -- then copy the data to buffer 2
-          tBuffer2[y][1] = table.pack(table.unpack(tBuffer1[y][1]))
-          tBuffer2[y][2] = table.pack(table.unpack(tBuffer1[y][2]))
-          tBuffer2[y][3] = table.pack(table.unpack(tBuffer1[y][3]))
-
-          -- then set this line's dirty value to false
-          tBuffer1[y].dirty = false
         end
       end
       bDirty = false
