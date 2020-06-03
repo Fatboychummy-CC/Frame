@@ -126,7 +126,7 @@ function tFuncs.new(tTerm)
         end
       end
       bDirty = false
-      term.setCursorPos(iCX, iCY)
+      tTerm.setCursorPos(iCX, iCY)
     end
   end
 
