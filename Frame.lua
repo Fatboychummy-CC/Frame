@@ -134,18 +134,21 @@ function tFuncs.new(tTerm)
   function tFrame.setCursorPos(_iCX, _iCY)
     expect(1, _iCX, "number")
     expect(2, _iCY, "number")
+
     iCX, iCY = _iCX, _iCY
     bDirty = true
   end
 
   function tFrame.setTextColor(iColor)
     expect(1, iColor, "number")
+
     blitText = tBlit[iColor]
   end
   tFrame.setTextColour = tFrame.setTextColor
 
   function tFrame.setBackgroundColor(iColor)
     expect(1, iColor, "number")
+
     blitBackground = tBlit[iColor]
   end
   tFrame.setBackgroundColour = tFrame.setBackgroundColor
@@ -153,11 +156,14 @@ function tFuncs.new(tTerm)
   function tFrame.write(sText)
     expect(1, sText, "string", "number")
 
+    -- if we are within the bounds (y direction)
     if iCY <= iY and iCY >= 1 then
       sText = tostring(sText)
+      -- for each character, set it.
       local i = 0
       for char in sText:gmatch(".") do
         local pos = iCX + i
+        -- if we are within bounds (x direction)
         if pos <= iX and pos >= 1 then
           tBuffer1[iCY][1][pos] = char
           tBuffer1[iCY][2][pos] = blitText
@@ -176,19 +182,25 @@ function tFuncs.new(tTerm)
     expect(1, sText, "string")
     expect(2, sTextColor, "string")
     expect(3, sBackgroundColor, "string")
+
     if #sText ~= #sTextColor or #sTextColor ~= #sBackgroundColor or #sText ~= # sBackgroundColor then
       error("Bad arguments: Expected strings of equal length.", 2)
     end
 
+    -- if we are within bounds (y direction)
     if iCY >= 1 and iCY <= iY then
+      -- for each char
       local i = 0
       for char in sText:gmatch(".") do
+        -- write it
         local pos = iCX + i
+        -- if we are within bounds (x direction)
         if pos >= 1 and pos <= iX then
           tBuffer1[iCY][1][pos] = char
           i = i + 1
         end
       end
+      -- do the same as above but for each text color blit char
       i = 0
       for char in sTextColor:gmatch(".") do
         local pos = iCX + i
@@ -197,6 +209,7 @@ function tFuncs.new(tTerm)
           i = i + 1
         end
       end
+      -- do the same as above but for each background color blit char
       i = 0
       for char in sBackgroundColor:gmatch(".") do
         local pos = iCX + i
@@ -215,7 +228,9 @@ function tFuncs.new(tTerm)
   function tFrame.scroll(iNum)
     expect(1, iNum, "number")
 
+    -- if our number is greater than 0
     if iNum > 0 then
+      -- remove the first line, and append new line however many times is needed
       for i = 1, iNum do
         table.remove(tBuffer1[1]) -- table.remove should automatically shift
         tBuffer1[iY] = initLine(iY, ' ', sTextColor, sBackgroundColor, false)
