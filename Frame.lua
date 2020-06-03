@@ -63,9 +63,9 @@ function tFuncs.new(tTerm)
       tBuffer1[iLine][2] = {} -- text colors
       tBuffer1[iLine][3] = {} -- background colors
       for x = 1, iX do
-        tBuffer1[iLine][1][x] = " "
-        tBuffer1[iLine][2][x] = "0"
-        tBuffer1[iLine][3][x] = "f"
+        tBuffer1[iLine][1][x] = sText
+        tBuffer1[iLine][2][x] = sTextColor
+        tBuffer1[iLine][3][x] = sBackgroundColor
       end
     else
       tBuffer2[iLine] = {}
@@ -73,9 +73,9 @@ function tFuncs.new(tTerm)
       tBuffer2[iLine][2] = {} -- text colors
       tBuffer2[iLine][3] = {} -- background colors
       for x = 1, iX do
-        tBuffer2[iLine][1][x] = " "
-        tBuffer2[iLine][2][x] = "0"
-        tBuffer2[iLine][3][x] = "f"
+        tBuffer2[iLine][1][x] = sText
+        tBuffer2[iLine][2][x] = sTextColor
+        tBuffer2[iLine][3][x] = sBackgroundColor
       end
     end
   end
@@ -167,6 +167,7 @@ function tFuncs.new(tTerm)
       end
 
       tBuffer1[iCY].dirty = true
+      bDirty = true
     end
     tFrame.setCursorPos(iCX + #sText, iCY)
   end
@@ -206,6 +207,7 @@ function tFuncs.new(tTerm)
       end
 
       tBuffer1[iCY].dirty = true
+      bDirty = true
     end
     tFrame.setCursorPos(iCX + #sText, iCY)
   end
@@ -221,6 +223,7 @@ function tFuncs.new(tTerm)
       for i = 1, iY do
         tBuffer1[i].dirty = true
       end
+      bDirty = true
     end
   end
 
@@ -251,6 +254,7 @@ function tFuncs.new(tTerm)
   function tFrame.clearLine(iLine)
     initLine(iLine, ' ', blitText, blitBackground, false)
     tBuffer1[iLine].dirty = true
+    bDirty = true
   end
 
   return tFrame
