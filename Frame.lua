@@ -61,6 +61,7 @@ function tFuncs.new(tTerm)
   expect(1, tTerm, "table")
   local tFrame, tBuffer1, tBuffer2 = {}, {}, {}
   local bDirty = false
+  local postRedisplay = false
   local iCX, iCY = 1, 1
   local blitText = "0"
   local blitBackground = "f"
@@ -106,17 +107,23 @@ function tFuncs.new(tTerm)
     tTerm.clear()
   end
 
+  -- Force update every line upon next draw
+  function tFrame.PostRedisplay()
+    postRedisplay = true
+  end
+
   -- push the buffer to the terminal if the buffer is dirty
   function tFrame.PushBuffer()
-    if bDirty then
+    if bDirty or postRedisplay then
       -- if the buffer is marked dirty
       for y = 1, #tBuffer1 do
         -- check each line
-        if tBuffer1[y].dirty then
+        if tBuffer1[y].dirty or postRedisplay then
           for i = 1, iX do
             if tBuffer1[y][1][i] ~= tBuffer2[y][1][i]
               or tBuffer1[y][2][i] ~= tBuffer2[y][2][i]
-              or tBuffer1[y][3][i] ~= tBuffer2[y][3][i] then
+              or tBuffer1[y][3][i] ~= tBuffer2[y][3][i]
+              or postRedisplay then
 
               -- if the line is marked dirty (and is actually dirty), blit it to the terminal
               tTerm.setCursorPos(1, y)
@@ -139,6 +146,7 @@ function tFuncs.new(tTerm)
         end
       end
       bDirty = false
+      postRedisplay = false
       tTerm.setCursorPos(iCX, iCY)
     end
   end
