@@ -16,12 +16,24 @@ local tBlit = {
   [colors.brown]     = "c",
   [colors.green]     = "d",
   [colors.red]       = "e",
-  [colors.black]     = "f"
+  [colors.black]     = "f",
+  ["0"] = colors.white,
+  ["1"] = colors.orange,
+  ["2"] = colors.magenta,
+  ["3"] = colors.lightBlue,
+  ["4"] = colors.yellow,
+  ["5"] = colors.lime,
+  ["6"] = colors.pink,
+  ["7"] = colors.gray,
+  ["8"] = colors.lightGray,
+  ["9"] = colors.cyan,
+  a     = colors.purple,
+  b     = colors.blue,
+  c     = colors.brown,
+  d     = colors.green,
+  e     = colors.red,
+  f     = colors.black
 }
-for k, v in pairs(tBlit) do
-  tBlit[v] = k
-end
-
 --[[
   buffer format:
   {
@@ -240,8 +252,19 @@ function tFuncs.new(tTerm)
     if iNum > 0 then
       -- remove the first line, and append new line however many times is needed
       for i = 1, iNum do
-        table.remove(tBuffer1[1]) -- table.remove should automatically shift
-        tBuffer1[iY] = initLine(iY, ' ', sTextColor, sBackgroundColor, false)
+        table.remove(tBuffer1, 1) -- table.remove should automatically shift
+        initLine(iY, ' ', blitText, blitBackground, false)
+      end
+      for i = 1, iY do
+        tBuffer1[i].dirty = true
+      end
+      bDirty = true
+    else
+      -- remove the last line, and append new line however many times is needed
+      for i = -1, iNum, -1 do
+        table.remove(tBuffer1)
+        table.insert(tBuffer1, 1, {})
+        initLine(1, ' ', blitText, blitBackground, false)
       end
       for i = 1, iY do
         tBuffer1[i].dirty = true
@@ -251,12 +274,12 @@ function tFuncs.new(tTerm)
   end
 
   function tFrame.getBackgroundColor()
-    return tBlit[sBackgroundColor]
+    return tBlit[blitBackground]
   end
   tFrame.getBackgroundColour = tFrame.getBackgroundColor
 
   function tFrame.getTextColor()
-    return tBlit[sTextColor]
+    return tBlit[blitText]
   end
   tFrame.getTextColour = tFrame.getTextColor
 
