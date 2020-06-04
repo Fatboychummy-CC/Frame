@@ -141,6 +141,7 @@ function tFuncs.new(tTerm)
 
   function tFrame.setTextColor(iColor)
     expect(1, iColor, "number")
+    if not tBlit[iColor] then error("Bad argument #1: Expected color.", 2) end
 
     blitText = tBlit[iColor]
   end
@@ -148,6 +149,7 @@ function tFuncs.new(tTerm)
 
   function tFrame.setBackgroundColor(iColor)
     expect(1, iColor, "number")
+    if not tBlit[iColor] then error("Bad argument #1: Expected color.", 2) end
 
     blitBackground = tBlit[iColor]
   end
@@ -185,6 +187,12 @@ function tFuncs.new(tTerm)
 
     if #sText ~= #sTextColor or #sTextColor ~= #sBackgroundColor or #sText ~= # sBackgroundColor then
       error("Bad arguments: Expected strings of equal length.", 2)
+    end
+    if sTextColor:match("[^abcdef0123456789]") then
+      error("Bad argument #2: Allowed characters: abcdef0123456789", 2)
+    end
+    if sBackgroundColor:match("[^abcdef0123456789]") then
+      error("Bad argument #3: Allowed characters: abcdef0123456789", 2)
     end
 
     -- if we are within bounds (y direction)
@@ -267,6 +275,11 @@ function tFuncs.new(tTerm)
   end
 
   function tFrame.clearLine(iLine)
+    expect(1, iLine, "number")
+    if iLine <= 0 then
+      error("Bad argument #1: Expected number greater than 0.", 2)
+    end
+
     initLine(iLine, ' ', blitText, blitBackground, false)
     tBuffer1[iLine].dirty = true
     bDirty = true
