@@ -158,6 +158,16 @@ function tFuncs.new(tTerm)
     iCX, iCY = _iCX, _iCY
     bDirty = true
   end
+  
+  function tFrame.setPaletteColor(...)
+    return tTerm.setPaletteColor(...)
+  end
+  tFrame.setPaletteColour = tFrame.setPaletteColor
+  
+  function tFrame.getPaletteColor(...)
+    return tTerm.setPaletteColor(...)
+  end
+  tFrame.getPaletteColour = tFrame.getPaletteColor
 
   function tFrame.setTextColor(iColor)
     expect(1, iColor, "number")
