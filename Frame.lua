@@ -159,15 +159,11 @@ function tFuncs.new(tTerm)
     bDirty = true
   end
   
-  function tFrame.setPaletteColor(...)
-    return tTerm.setPaletteColor(...)
-  end
-  tFrame.setPaletteColour = tFrame.setPaletteColor
+  tFrame.setPaletteColor = tTerm.setPaletteColor
+  tFrame.setPaletteColour = tTerm.setPaletteColour
   
-  function tFrame.getPaletteColor(...)
-    return tTerm.setPaletteColor(...)
-  end
-  tFrame.getPaletteColour = tFrame.getPaletteColor
+  tFrame.getPaletteColor = tTerm.getPaletteColor
+  tFrame.getPaletteColour = tTerm.getPaletteColour
 
   function tFrame.setTextColor(iColor)
     expect(1, iColor, "number")
