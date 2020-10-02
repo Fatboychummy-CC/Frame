@@ -66,6 +66,16 @@ function tFuncs.new(tTerm)
   local blitText = "0"
   local blitBackground = "f"
   local iX, iY
+  local toCall = {}
+
+  -- register a call to be made upon the next redraw.
+  local function regCall(func, ...)
+    local args = table.pack(...)
+
+    toCall[#toCall + 1] = function()
+      func(table.unpack(args, 1, args.n))
+    end
+  end
 
   -- initialize a full line with all the same chars/colors
   -- bSwitch: false = buffer 1, true = buffer 2,
@@ -149,6 +159,12 @@ function tFuncs.new(tTerm)
       bPostRedisplay = false
       tTerm.setCursorPos(iCX, iCY)
     end
+
+    -- call any functions that have been pre registered
+    while toCall[1] do
+      toCall[1]()
+      table.remove(toCall, 1)
+    end
   end
 
   function tFrame.setCursorPos(_iCX, _iCY)
@@ -158,12 +174,27 @@ function tFuncs.new(tTerm)
     iCX, iCY = _iCX, _iCY
     bDirty = true
   end
-  
-  tFrame.setPaletteColor = tTerm.setPaletteColor
-  tFrame.setPaletteColour = tTerm.setPaletteColour
-  
+
+  -- Palette stuff
+  function tFrame.setPaletteColor(...)
+    regCall(tTerm.setPaletteColor, ...)
+  end
+  tFrame.setPaletteColour = tFrame.setPaletteColor
+
   tFrame.getPaletteColor = tTerm.getPaletteColor
   tFrame.getPaletteColour = tTerm.getPaletteColour
+
+  tFrame.nativePaletteColor = tTerm.nativePaletteColor
+  tFrame.nativePaletteColour = tTerm.nativePaletteColour
+
+  -- Cursor stuff
+  function tFrame.setCursorBlink(...)
+    regCall(tTerm.setCursorBlink, ...)
+  end
+  tFrame.getCursorBlink = tTerm.getCursorBlink
+
+  tFrame.isColor = tTerm.isColor
+  tFrame.isColour = tTerm.isColour
 
   function tFrame.setTextColor(iColor)
     expect(1, iColor, "number")
