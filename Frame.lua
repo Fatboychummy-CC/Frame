@@ -120,6 +120,7 @@ function tFuncs.new(tTerm)
   function tFrame.RedirectFrame(tNewTerm, bNoRedisplay)
     expect(1, tNewTerm, "table")
     expect(2, bNoRedisplay, "boolean", "nil")
+
     tTerm = tNewTerm
     if not bNoRedisplay then
       tFrame.PostRedisplay()
