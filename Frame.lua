@@ -117,6 +117,15 @@ function tFuncs.new(tTerm)
     tTerm.clear()
   end
 
+  function tFrame.RedirectFrame(tNewTerm, bNoRedisplay)
+    expect(1, tNewTerm, "table")
+    expect(2, bNoRedisplay, "boolean", "nil")
+    tTerm = tNewTerm
+    if not bNoRedisplay then
+      tFrame.PostRedisplay()
+    end
+  end
+
   -- Force update every line upon next draw
   function tFrame.PostRedisplay()
     bPostRedisplay = true
