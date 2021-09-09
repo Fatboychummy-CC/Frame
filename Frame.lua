@@ -374,14 +374,9 @@ function tFuncs.new(tTerm)
     end
   end
 
-  function tFrame.clearLine(iLine)
-    expect(1, iLine, "number")
-    if iLine <= 0 then
-      error("Bad argument #1: Expected number greater than 0.", 2)
-    end
-
-    initLine(iLine, ' ', blitText, blitBackground, false)
-    tBuffer1[iLine].dirty = true
+  function tFrame.clearLine()
+    initLine(iCY, ' ', blitText, blitBackground, false)
+    tBuffer1[iCY].dirty = true
     bDirty = true
   end
 
